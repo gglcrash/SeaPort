@@ -3,7 +3,7 @@ package crane;
 import main.CargoType;
 import main.Unloader;
 
-public class Crane implements Unloader {
+class Crane implements Unloader {
     private CargoType type;
     private int complexity;
     private boolean isAvailable;
