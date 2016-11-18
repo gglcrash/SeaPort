@@ -13,6 +13,14 @@ public class Broker {
 
     }
 
+    public ArrayList<Unloadable> getUnloadableArrived(){
+        return unloadableArrived;
+    }
+
+    public ArrayList<Unloader> getUnloadersList(){
+        return unloadersList;
+    }
+
     public void startSimulation(){
 
     }
