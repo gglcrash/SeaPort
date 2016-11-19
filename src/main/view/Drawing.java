@@ -1,4 +1,4 @@
-package main;
+package main.view;
 
 import java.util.ArrayList;
 
@@ -8,23 +8,14 @@ import net.slashie.libjcsi.ConsoleSystemInterface;
 import net.slashie.libjcsi.wswing.WSwingConsoleInterface;
 
 public class Drawing {
-    ArrayList<Unloadable> unloadableArrived;
-    ArrayList<Unloader> unloadersList;
-    Broker broker;
-
     private static ConsoleSystemInterface csi;
     private boolean stop;
     private int x, y;
 
-    public Drawing(Broker broker){
-        this.broker = broker;
-        updateDataFromBroker();
+    public Drawing(){
+
     }
 
-    private void updateDataFromBroker(){
-        unloadableArrived = broker.getUnloadableArrived();
-        unloadersList = broker.getUnloadersList();
-    }
 
     public void startDrawing(){
         csi = new WSwingConsoleInterface("RogueLike", true);

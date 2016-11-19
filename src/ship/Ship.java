@@ -1,9 +1,9 @@
 package ship;
 
-import main.CargoType;
-import main.Unloadable;
+import main.model.CargoType;
+import main.interfaces.Unloadable;
 
-class Ship implements Unloadable {
+class Ship implements Unloadable{
     private String name;
     private int weight;
     private CargoType type;
@@ -42,5 +42,10 @@ class Ship implements Unloadable {
     @Override
     public int getWeight() {
         return weight;
+    }
+
+    @Override
+    public void currentDayChanged(int day) {
+
     }
 }

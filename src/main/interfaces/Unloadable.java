@@ -1,6 +1,8 @@
-package main;
+package main.interfaces;
 
-public interface Unloadable {
+import main.model.CargoType;
+
+public interface Unloadable extends Observer{
     void setName(String name);
     String getName();
     CargoType getType();

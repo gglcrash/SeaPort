@@ -1,6 +1,6 @@
 package crane;
 
-import main.CargoType;
+import main.model.CargoType;
 
 public class DryCargoCrane extends Crane{
     public DryCargoCrane(){

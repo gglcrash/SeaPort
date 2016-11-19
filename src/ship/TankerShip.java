@@ -1,6 +1,6 @@
 package ship;
 
-import main.CargoType;
+import main.model.CargoType;
 
 public class TankerShip extends Ship{
     public TankerShip(String name, int weight){
