@@ -9,6 +9,7 @@ class Ship implements Unloadable{
     private CargoType type;
     private int daysInPort;
     private boolean isInPort;
+    private int x,y,newX,newY;
 
 
     //логика создания рандомного корабля
@@ -22,6 +23,10 @@ class Ship implements Unloadable{
         this.type = type;
         daysInPort = 0;
         isInPort = false;
+        setX(0);
+        setY(0);
+        setNewX(0);
+        setNewY(0);
     }
 
     @Override
@@ -67,4 +72,43 @@ class Ship implements Unloadable{
     }
 
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
+
+    @Override
+    public int getNewX() {
+        return newX;
+    }
+
+    @Override
+    public void setNewX(int x) {
+        this.newX = x;
+    }
+
+    @Override
+    public int getNewY() {
+        return newY;
+    }
+
+    @Override
+    public void setNewY(int y) {
+        this.newY = y;
+    }
 }

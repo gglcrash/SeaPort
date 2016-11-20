@@ -3,11 +3,12 @@ package crane;
 import main.model.CargoType;
 import main.interfaces.Unloader;
 
-class Crane implements Unloader {
+class Crane implements Unloader{
     private CargoType type;
     private int complexity;
     private boolean isAvailable;
     private int endUnloadingDay;
+    private int x,y;
 
     // логика создания рандомного крана
     protected  Crane(){
@@ -18,6 +19,8 @@ class Crane implements Unloader {
         this.type = type;
         this.complexity = complexity;
         setAvailability(true);
+        setX(0);
+        setY(0);
     }
 
     @Override
@@ -51,5 +54,25 @@ class Crane implements Unloader {
         if(endUnloadingDay == day){
             setAvailability(true);
         }
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public int getY() {
+        return y;
     }
 }
