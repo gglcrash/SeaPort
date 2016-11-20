@@ -1,6 +1,5 @@
 package main.model;
 
-import com.sun.istack.internal.Nullable;
 import main.interfaces.Observable;
 import main.interfaces.Observer;
 import main.interfaces.Unloadable;
@@ -9,11 +8,12 @@ import main.interfaces.Unloader;
 import java.util.*;
 
 public class Broker implements Observable{
-    Map<Unloadable,Integer> unloadableInSchedule = new HashMap<>();
-    ArrayList<Unloadable> unloadableArrived = new ArrayList<>();
-    ArrayList<Unloader> unloadersList = new ArrayList<>();
-    ArrayList<Observer> observersList = new ArrayList<>();
-    Observer controllerObserver;
+    private Map<Unloadable,Integer> unloadableInSchedule = new HashMap<>();
+    private ArrayList<Unloadable> unloadableArrived = new ArrayList<>();
+    private Map<Unloadable,Unloader> unloadablesAtUnloaders = new HashMap<>();
+    private ArrayList<Unloader> unloadersList = new ArrayList<>();
+    private ArrayList<Observer> observersList = new ArrayList<>();
+    private Observer controllerObserver;
     private int fineSum;
     private int finishedUnloadCount;
     private int currentDay;
@@ -50,20 +50,19 @@ public class Broker implements Observable{
         return unloadersList;
     }
 
-    public void startSimulation(){
-
-    }
-
-    public void addUnloadableInList(Unloadable newUnloadable){
-
+    public void addUnloadableInList(Unloadable newUnloadable,int expectedDay){
+        unloadableInSchedule.put(newUnloadable,expectedDay);
     }
 
     private void checkUnloadersAvailability(){
 
     }
 
-    private void startUnloading(){
-
+    private int calculateDaysForUnload(Unloadable unloadable, Unloader unloader){
+        int weight = unloadable.getWeight();
+        int complexity = unloader.getComplexity();
+        //бла бла бла
+        return 3;
     }
 
     private int calculateDelayForUnloadable(Unloadable unloadable){
@@ -74,25 +73,69 @@ public class Broker implements Observable{
         return 0;
     }
 
-    private int calculateFine(Unloadable unloadable){
+    private int calculateFine(CargoType type, int delay){
         return 0;
     }
 
     private void nextDay(){
         currentDay++;
+        checkArrivingUnloadables();
+        concatUnloadableWithUnloader();
+        checkEndOfUnloading();
+
+        notifyObservers();
+    }
+
+    private void checkArrivingUnloadables(){
         List<Unloadable> synchronizedSceduleList =
                 Collections.synchronizedList(new ArrayList<>(unloadableInSchedule.keySet()));
 
         for(Unloadable unload : synchronizedSceduleList){
             if(unloadableInSchedule.get(unload)==currentDay){
+                unload.setIsArrived(true);
                 unloadableArrived.add(unload);
                 unloadableInSchedule.remove(unload);
             }
         }
-        if(currentDay==6){
-            int x =0;
+    }
+
+    private void concatUnloadableWithUnloader(){
+        List<Unloadable> synchronizedArrivedList =
+                Collections.synchronizedList(new ArrayList<>(unloadableArrived));
+        List<Unloader> synchronizedUnloadersList =
+                Collections.synchronizedList(new ArrayList<>(unloadersList));
+
+        for(Unloader unloader : synchronizedUnloadersList){
+            if(unloader.getAvailability()){
+                for(Unloadable unloadable:synchronizedArrivedList){
+                    if(unloadable.getType()==unloader.getType()){
+                        int delay = calculateDelayForUnloadable(unloadable);
+                        fineSum += calculateFine(unloadable.getType(),delay);
+                        int daysForUnload = calculateDaysForUnload(unloadable,unloader)+
+                                delay;
+                        unloader.startUnloading(daysForUnload+currentDay);
+                        unloadablesAtUnloaders.put(unloadable,unloader);
+                        unloadableArrived.remove(unloadable);
+                    }
+                }
+            }
         }
-        notifyObservers();
+
+    }
+
+    private void checkEndOfUnloading(){
+        List<Unloadable> synchronizedUnloadableAtUnloaderList =
+                Collections.synchronizedList(new ArrayList<>(unloadablesAtUnloaders.keySet()));
+        for(Unloadable unloadable : synchronizedUnloadableAtUnloaderList){
+            if (unloadablesAtUnloaders.get(unloadable).getAvailability()){
+                setLogs();
+                unloadablesAtUnloaders.remove(unloadable);
+            }
+        }
+    }
+
+    private void setLogs(){
+
     }
 
     @Override

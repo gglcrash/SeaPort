@@ -33,6 +33,7 @@ public class Controller implements Observer{
 
     @Override
     public void currentDayChanged(int day) {
+        updateDataFromBroker();
 
     }
 }

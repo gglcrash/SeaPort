@@ -7,6 +7,9 @@ class Ship implements Unloadable{
     private String name;
     private int weight;
     private CargoType type;
+    private int daysInPort;
+    private boolean isInPort;
+
 
     //логика создания рандомного корабля
     public Ship(){
@@ -17,6 +20,8 @@ class Ship implements Unloadable{
         this.name = name;
         this.weight = weight;
         this.type = type;
+        daysInPort = 0;
+        isInPort = false;
     }
 
     @Override
@@ -45,7 +50,19 @@ class Ship implements Unloadable{
     }
 
     @Override
+    public int getDaysAfterArrive() {
+        return daysInPort;
+    }
+
+    @Override
+    public void setIsArrived(boolean arrived){
+        this.isInPort = arrived;
+    }
+
+    @Override
     public void currentDayChanged(int day) {
 
     }
+
+
 }

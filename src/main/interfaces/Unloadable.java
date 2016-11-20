@@ -8,4 +8,6 @@ public interface Unloadable extends Observer{
     CargoType getType();
     void setWeight(int weight);
     int getWeight();
+    int getDaysAfterArrive();
+    void setIsArrived(boolean arrived);
 }

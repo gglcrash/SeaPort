@@ -7,6 +7,5 @@ public interface Unloader extends Observer{
     int getComplexity();
     void setAvailability(boolean availability);
     boolean getAvailability();
-    void setUnloadable(Unloadable unloadable);
-    Unloadable getUnloadable();
+    void startUnloading(int days);
 }
