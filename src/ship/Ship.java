@@ -25,8 +25,6 @@ class Ship implements Unloadable{
         isInPort = false;
         setX(0);
         setY(0);
-        setNewX(0);
-        setNewY(0);
     }
 
     @Override
@@ -92,23 +90,4 @@ class Ship implements Unloadable{
         return y;
     }
 
-    @Override
-    public int getNewX() {
-        return newX;
-    }
-
-    @Override
-    public void setNewX(int x) {
-        this.newX = x;
-    }
-
-    @Override
-    public int getNewY() {
-        return newY;
-    }
-
-    @Override
-    public void setNewY(int y) {
-        this.newY = y;
-    }
 }
