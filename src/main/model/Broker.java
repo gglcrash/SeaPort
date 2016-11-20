@@ -18,8 +18,8 @@ public class Broker implements Observable{
     private int finishedUnloadCount;
     private int currentDay;
 
-    public Broker(Map<Unloadable, Integer> unloadableList, ArrayList<Unloader> unloaderList){
-        unloadableInSchedule = unloadableList;
+    public Broker(Map<Unloadable, Integer> unloadableMap, ArrayList<Unloader> unloaderList){
+        unloadableInSchedule = unloadableMap;
         unloadersList = unloaderList;
         setObserversList();
 
@@ -52,6 +52,7 @@ public class Broker implements Observable{
 
     public void addUnloadableInList(Unloadable newUnloadable,int expectedDay){
         unloadableInSchedule.put(newUnloadable,expectedDay);
+        observersList.add(newUnloadable);
     }
 
     private void checkUnloadersAvailability(){
@@ -62,7 +63,7 @@ public class Broker implements Observable{
         int weight = unloadable.getWeight();
         int complexity = unloader.getComplexity();
         //бла бла бла
-        return 3;
+        return 2;
     }
 
     private int calculateDelayForUnloadable(Unloadable unloadable){
@@ -80,10 +81,11 @@ public class Broker implements Observable{
     private void nextDay(){
         currentDay++;
         checkArrivingUnloadables();
-        concatUnloadableWithUnloader();
         checkEndOfUnloading();
+        concatUnloadableWithUnloader();
 
         notifyObservers();
+
     }
 
     private void checkArrivingUnloadables(){
@@ -111,8 +113,7 @@ public class Broker implements Observable{
                     if(unloadable.getType()==unloader.getType()){
                         int delay = calculateDelayForUnloadable(unloadable);
                         fineSum += calculateFine(unloadable.getType(),delay);
-                        int daysForUnload = calculateDaysForUnload(unloadable,unloader)+
-                                delay;
+                        int daysForUnload = calculateDaysForUnload(unloadable,unloader)+ delay;
                         unloader.startUnloading(daysForUnload+currentDay);
                         unloadablesAtUnloaders.put(unloadable,unloader);
                         unloadableArrived.remove(unloadable);
@@ -130,6 +131,7 @@ public class Broker implements Observable{
             if (unloadablesAtUnloaders.get(unloadable).getAvailability()){
                 setLogs();
                 unloadablesAtUnloaders.remove(unloadable);
+                observersList.remove(unloadable);
             }
         }
     }

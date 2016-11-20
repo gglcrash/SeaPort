@@ -24,11 +24,11 @@ public class Main {
         Map<Unloadable, Integer> shipsInSchedule = new HashMap<>();  // <разгружаемый,ожидаемый день прибытия>
         ArrayList<Unloader> cranesInPort = new ArrayList<>();
 
-        shipsInSchedule.put(new ContainerShip("nova",50),4);
+        shipsInSchedule.put(new ContainerShip("nova",50),13);
         shipsInSchedule.put(new ContainerShip("nova2",40),1);
         shipsInSchedule.put(new DryCargoShip("average",20),5);
-        shipsInSchedule.put(new TankerShip("neutron",10),10);
-        shipsInSchedule.put(new TankerShip("neutron2",15),7);
+        shipsInSchedule.put(new TankerShip("neutron",10),9);
+        shipsInSchedule.put(new TankerShip("neutron2",15),17);
 
         cranesInPort.add(new ContainerCrane());
         cranesInPort.add(new DryCargoCrane());

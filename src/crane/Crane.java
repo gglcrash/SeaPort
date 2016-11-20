@@ -42,6 +42,7 @@ class Crane implements Unloader {
 
     @Override
     public void startUnloading(int day){
+        setAvailability(false);
         endUnloadingDay = day;
     }
 

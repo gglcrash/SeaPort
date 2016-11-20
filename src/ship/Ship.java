@@ -61,7 +61,9 @@ class Ship implements Unloadable{
 
     @Override
     public void currentDayChanged(int day) {
-
+        if(isInPort){
+            daysInPort++;
+        }
     }
 
 
