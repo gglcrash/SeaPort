@@ -1,4 +1,4 @@
-package main.com.netcracker.seaport.java.model;
+package main.java.com.netcracker.seaport.model;
 
 public enum CargoType {
     TANKER,

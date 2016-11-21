@@ -1,9 +1,9 @@
-package main.com.netcracker.seaport.java.model.crane;
+package main.java.com.netcracker.seaport.model.crane;
 
-import main.com.netcracker.seaport.java.model.CargoType;
-import main.com.netcracker.seaport.java.Unloader;
+import main.java.com.netcracker.seaport.Unloader;
+import main.java.com.netcracker.seaport.model.CargoType;
 
-class Crane implements Unloader{
+class Crane implements Unloader {
     private CargoType type;
     private int complexity;
     private boolean isAvailable;
