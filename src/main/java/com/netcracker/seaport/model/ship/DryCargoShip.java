@@ -1,6 +1,6 @@
-package ship;
+package  com.netcracker.seaport.model.ship;
 
-import main.model.CargoType;
+import  com.netcracker.seaport.model.CargoType;
 
 public class DryCargoShip extends Ship{
     public DryCargoShip(String name, int weight){

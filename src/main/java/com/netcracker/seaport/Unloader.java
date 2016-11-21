@@ -1,8 +1,8 @@
-package main.interfaces;
+package com.netcracker.seaport;
 
-import main.model.CargoType;
+import com.netcracker.seaport.model.CargoType;
 
-public interface Unloader extends Observer{
+public interface Unloader extends Drawable{
     CargoType getType();
     int getComplexity();
     void setAvailability(boolean availability);

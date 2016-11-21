@@ -1,8 +1,8 @@
-package main.interfaces;
+package com.netcracker.seaport;
 
-import main.model.CargoType;
+import com.netcracker.seaport.model.CargoType;
 
-public interface Unloadable extends Observer{
+public interface Unloadable extends Drawable{
     void setName(String name);
     String getName();
     CargoType getType();
