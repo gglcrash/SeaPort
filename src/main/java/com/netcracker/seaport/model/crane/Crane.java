@@ -1,7 +1,7 @@
-package main.java.com.netcracker.seaport.model.crane;
+package com.netcracker.seaport.model.crane;
 
-import main.java.com.netcracker.seaport.Unloader;
-import main.java.com.netcracker.seaport.model.CargoType;
+import com.netcracker.seaport.Unloader;
+import com.netcracker.seaport.model.CargoType;
 
 class Crane implements Unloader {
     private CargoType type;

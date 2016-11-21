@@ -1,11 +1,11 @@
-package main.java.com.netcracker.seaport.view;
+package com.netcracker.seaport.view;
 
-import main.java.com.netcracker.seaport.Unloader;
+import com.netcracker.seaport.Unloader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import main.java.com.netcracker.seaport.Unloadable;
+import com.netcracker.seaport.Unloadable;
 
 import net.slashie.libjcsi.CSIColor;
 import net.slashie.libjcsi.ConsoleSystemInterface;
