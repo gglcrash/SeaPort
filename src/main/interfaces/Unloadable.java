@@ -2,7 +2,7 @@ package main.interfaces;
 
 import main.model.CargoType;
 
-public interface Unloadable extends Observer{
+public interface Unloadable extends Drawable{
     void setName(String name);
     String getName();
     CargoType getType();
