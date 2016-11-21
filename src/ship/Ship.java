@@ -44,7 +44,12 @@ class Ship implements Unloadable{
 
     @Override
     public void setWeight(int weight) {
-        this.weight = weight;
+        if(weight>100){
+            this.weight = 100;
+        }
+        if(weight<0){
+            this.weight = 0;
+        }
     }
 
     @Override

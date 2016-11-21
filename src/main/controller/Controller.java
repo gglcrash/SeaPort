@@ -41,4 +41,16 @@ public class Controller implements Observer{
         drawer.draw(unloadableArrived,unloadersList,unloadableAtUnloaders);
     }
 
+    public void addUnloadable(Unloadable unloadable, int day){
+        broker.addUnloadableInList(unloadable,day);
+    }
+
+    public void pause(){
+        broker.pause();
+    }
+
+    public void resume(){
+        broker.resume();
+    }
+
 }

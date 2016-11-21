@@ -23,7 +23,7 @@ public class Drawing {
     private int day = 0;
 
     public Drawing(){
-        csi = new WSwingConsoleInterface("RogueLike", true);
+        csi = new WSwingConsoleInterface("Sea Port", true);
     }
 
 

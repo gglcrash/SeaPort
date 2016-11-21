@@ -14,9 +14,11 @@ public class Broker implements Observable{
     private ArrayList<Unloader> unloadersList = new ArrayList<>();
     private ArrayList<Observer> observersList = new ArrayList<>();
     private Observer controllerObserver;
+    private Timer timer;
     private int fineSum;
-    private int finishedUnloadCount;
+    private int finishedUnloadCount=0;
     private int currentDay;
+    private int totalArrivedCount = 0;
 
     public Broker(Map<Unloadable, Integer> unloadableMap, ArrayList<Unloader> unloaderList){
         unloadableInSchedule = unloadableMap;
@@ -24,7 +26,7 @@ public class Broker implements Observable{
         setObserversList();
         setCranesCoordinates(unloaderList);
 
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -68,16 +70,36 @@ public class Broker implements Observable{
         observersList.add(newUnloadable);
     }
 
+    public void pause(){
+        timer.cancel();
+    }
+
+    public void resume(){
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                nextDay();
+            }
+        }, 0,1000);
+    }
 
     private int calculateDaysForUnload(Unloadable unloadable, Unloader unloader){
         int weight = unloadable.getWeight();
         int complexity = unloader.getComplexity();
-        //бла бла бла
-        return 5;
+        int variable = 1;
+        if(weight>45){
+            variable=2;
+            if(weight>75){
+                variable=3;
+            }
+        }
+        return variable*complexity;
     }
 
     private int calculateDelayForUnloadable(Unloadable unloadable){
-        return 0;
+        Random rand = new Random();
+        return rand.nextInt(3);
     }
 
     private int calculateAverageDelay(){
@@ -98,7 +120,6 @@ public class Broker implements Observable{
         notifyObservers();
 
     }
-    int count = 0;
     private void checkArrivingUnloadables(){
         List<Unloadable> synchronizedSceduleList =
                 Collections.synchronizedList(new ArrayList<>(unloadableInSchedule.keySet()));
@@ -109,14 +130,17 @@ public class Broker implements Observable{
                 unloadableArrived.add(unload);
                 unloadableInSchedule.remove(unload);
 
-                count++;
-                int row = count/4;
-                int column = count%4;
-                unload.setX(40-10*column);
-                unload.setY(4+row);
+                totalArrivedCount++;
+                calculateCoordinatesForUnloadable(unload);
             }
-
         }
+    }
+
+    private void calculateCoordinatesForUnloadable(Unloadable unloadable){
+        int row = totalArrivedCount /4;
+        int column = totalArrivedCount %4;
+        unloadable.setX(40-10*column);
+        unloadable.setY(4+row);
     }
 
     private void concatUnloadableWithUnloader(){
@@ -131,8 +155,8 @@ public class Broker implements Observable{
 
                     if(unloadable.getType()==unloader.getType()){
                         int delay = calculateDelayForUnloadable(unloadable);
-                        fineSum += calculateFine(unloadable.getType(),delay);
                         int daysForUnload = calculateDaysForUnload(unloadable,unloader)+ delay;
+                        fineSum += calculateFine(unloadable.getType(),delay);
                         unloader.startUnloading(daysForUnload+currentDay);
 
                         unloadable.setX(unloader.getX());
@@ -154,6 +178,7 @@ public class Broker implements Observable{
                 setLogs();
                 unloadablesAtUnloaders.remove(unloadable);
                 observersList.remove(unloadable);
+                finishedUnloadCount++;
             }
         }
     }
