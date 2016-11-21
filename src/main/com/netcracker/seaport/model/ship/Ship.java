@@ -1,7 +1,7 @@
-package ship;
+package main.com.netcracker.seaport.model.ship;
 
-import main.model.CargoType;
-import main.interfaces.Unloadable;
+import main.com.netcracker.seaport.model.CargoType;
+import main.com.netcracker.seaport.Unloadable;
 
 class Ship implements Unloadable{
     private String name;
@@ -9,7 +9,7 @@ class Ship implements Unloadable{
     private CargoType type;
     private int daysInPort;
     private boolean isInPort;
-    private int x,y,newX,newY;
+    private int x,y;
 
 
     //логика создания рандомного корабля

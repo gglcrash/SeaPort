@@ -1,16 +1,16 @@
-package main;
+package main.com.netcracker.seaport;
 
-import crane.ContainerCrane;
-import crane.DryCargoCrane;
-import crane.TankerCrane;
-import main.controller.Controller;
-import main.interfaces.Unloadable;
-import main.interfaces.Unloader;
-import main.model.Broker;
-import main.view.Drawing;
-import ship.ContainerShip;
-import ship.DryCargoShip;
-import ship.TankerShip;
+import main.com.netcracker.seaport.model.crane.ContainerCrane;
+import main.com.netcracker.seaport.model.crane.DryCargoCrane;
+import main.com.netcracker.seaport.model.crane.TankerCrane;
+import main.com.netcracker.seaport.controller.Controller;
+import main.com.netcracker.seaport.Unloadable;
+import main.com.netcracker.seaport.Unloader;
+import main.com.netcracker.seaport.model.Broker;
+import main.com.netcracker.seaport.view.Drawing;
+import main.com.netcracker.seaport.model.ship.ContainerShip;
+import main.com.netcracker.seaport.model.ship.DryCargoShip;
+import main.com.netcracker.seaport.model.ship.TankerShip;
 
 import java.util.ArrayList;
 import java.util.HashMap;

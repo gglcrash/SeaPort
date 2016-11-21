@@ -1,4 +1,4 @@
-package main.interfaces;
+package main.com.netcracker.seaport;
 
 public interface Drawable extends Observer{
     void setX(int x);

@@ -1,9 +1,10 @@
-package main.model;
+package main.com.netcracker.seaport.model;
 
-import main.interfaces.Observable;
-import main.interfaces.Observer;
-import main.interfaces.Unloadable;
-import main.interfaces.Unloader;
+import main.com.netcracker.seaport.Observable;
+import main.com.netcracker.seaport.Observer;
+import main.com.netcracker.seaport.Unloadable;
+import main.com.netcracker.seaport.Unloader;
+import main.com.netcracker.seaport.logger.UnloadableLog;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ public class Broker implements Observable{
     private Map<Unloadable,Unloader> unloadablesAtUnloaders = new HashMap<>();
     private ArrayList<Unloader> unloadersList = new ArrayList<>();
     private ArrayList<Observer> observersList = new ArrayList<>();
+    private Map<Unloadable,UnloadableLog> logsOfUnloadables = new HashMap<>();
     private Observer controllerObserver;
     private Timer timer;
     private int fineSum;
@@ -63,6 +65,10 @@ public class Broker implements Observable{
 
     public Set<Unloadable> getUnloadablesAtUnloaders(){
         return unloadablesAtUnloaders.keySet();
+    }
+
+    public Collection<UnloadableLog> getUnloadableLogs() {
+        return logsOfUnloadables.values();
     }
 
     public void addUnloadableInList(Unloadable newUnloadable,int expectedDay){
@@ -124,16 +130,27 @@ public class Broker implements Observable{
         List<Unloadable> synchronizedSceduleList =
                 Collections.synchronizedList(new ArrayList<>(unloadableInSchedule.keySet()));
 
-        for(Unloadable unload : synchronizedSceduleList){
-            if(unloadableInSchedule.get(unload)==currentDay){
-                unload.setIsArrived(true);
-                unloadableArrived.add(unload);
-                unloadableInSchedule.remove(unload);
+
+        for(Unloadable unloadable : synchronizedSceduleList){
+            if(unloadableInSchedule.get(unloadable)==currentDay){
+
+                logUnloadableArrived(unloadable);
+
+                unloadable.setIsArrived(true);
+                unloadableArrived.add(unloadable);
+                unloadableInSchedule.remove(unloadable);
 
                 totalArrivedCount++;
-                calculateCoordinatesForUnloadable(unload);
+                calculateCoordinatesForUnloadable(unloadable);
             }
         }
+    }
+
+    private void logUnloadableArrived(Unloadable unloadable){
+        UnloadableLog log = new UnloadableLog();
+        log.setName(unloadable.getName());
+        log.setArrival(currentDay);
+        logsOfUnloadables.put(unloadable,log);
     }
 
     private void calculateCoordinatesForUnloadable(Unloadable unloadable){
@@ -154,6 +171,8 @@ public class Broker implements Observable{
                 for(Unloadable unloadable:synchronizedArrivedList){
 
                     if(unloadable.getType()==unloader.getType()){
+                        logUnloadableToUnloader(unloadable);
+
                         int delay = calculateDelayForUnloadable(unloadable);
                         int daysForUnload = calculateDaysForUnload(unloadable,unloader)+ delay;
                         fineSum += calculateFine(unloadable.getType(),delay);
@@ -170,12 +189,18 @@ public class Broker implements Observable{
         }
     }
 
+    private void logUnloadableToUnloader(Unloadable unloadable){
+        UnloadableLog log = logsOfUnloadables.get(unloadable);
+        log.setWaiting(currentDay-log.getArrival());
+        log.setUnloadStart(currentDay);
+    }
+
     private void checkEndOfUnloading(){
         List<Unloadable> synchronizedUnloadableAtUnloaderList =
                 Collections.synchronizedList(new ArrayList<>(unloadablesAtUnloaders.keySet()));
         for(Unloadable unloadable : synchronizedUnloadableAtUnloaderList){
             if (unloadablesAtUnloaders.get(unloadable).getAvailability()){
-                setLogs();
+                logUnloadableDeparture(unloadable);
                 unloadablesAtUnloaders.remove(unloadable);
                 observersList.remove(unloadable);
                 finishedUnloadCount++;
@@ -183,8 +208,10 @@ public class Broker implements Observable{
         }
     }
 
-    private void setLogs(){
-
+    private void logUnloadableDeparture(Unloadable unloadable){
+        UnloadableLog log = logsOfUnloadables.get(unloadable);
+        log.setUnloadDuration(currentDay-log.getUnloadStart());
+        log.setDeparture(currentDay);
     }
 
     @Override

@@ -1,12 +1,14 @@
-package main.controller;
+package main.com.netcracker.seaport.controller;
 
-import main.interfaces.Observer;
-import main.model.Broker;
-import main.view.Drawing;
-import main.interfaces.Unloadable;
-import main.interfaces.Unloader;
+import main.com.netcracker.seaport.Observer;
+import main.com.netcracker.seaport.logger.UnloadableLog;
+import main.com.netcracker.seaport.model.Broker;
+import main.com.netcracker.seaport.view.Drawing;
+import main.com.netcracker.seaport.Unloadable;
+import main.com.netcracker.seaport.Unloader;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 public class Controller implements Observer{
@@ -15,6 +17,7 @@ public class Controller implements Observer{
     private ArrayList<Unloadable> unloadableArrived;
     private ArrayList<Unloader> unloadersList;
     private Set<Unloadable> unloadableAtUnloaders;
+    private Collection<UnloadableLog> logs;
 
 
     public Controller (Broker broker, Drawing drawer){
@@ -53,4 +56,8 @@ public class Controller implements Observer{
         broker.resume();
     }
 
+    private void getLogs(){
+        logs = broker.getUnloadableLogs();
+
+    }
 }

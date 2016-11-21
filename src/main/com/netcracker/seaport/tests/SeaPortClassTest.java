@@ -1,4 +1,4 @@
-package test;
+package main.com.netcracker.seaport.tests;
 
 public class SeaPortClassTest {
 
