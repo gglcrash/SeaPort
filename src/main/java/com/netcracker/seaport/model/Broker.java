@@ -40,7 +40,6 @@ public class Broker implements Observable {
     private void setObserversList(){
         observersList.addAll(unloadableInSchedule.keySet());
         observersList.addAll(unloadersList);
-
     }
 
     private void setCranesCoordinates(ArrayList<Unloader> unloaders){
@@ -48,7 +47,6 @@ public class Broker implements Observable {
             unloaders.get(i).setY(20);
             unloaders.get(i).setX(10+20*i);
         }
-
     }
 
     public void setObserverController(Observer cont){
