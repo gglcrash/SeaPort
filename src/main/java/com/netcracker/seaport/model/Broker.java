@@ -49,6 +49,14 @@ public class Broker implements Observable {
         }
     }
 
+    private void setCranesCoordinates(ArrayList<Unloader> unloaders){
+        for(int i = 0;i<unloaders.size();i++){
+            unloaders.get(i).setY(20);
+            unloaders.get(i).setX(10+20*i);
+        }
+
+    }
+
     public void setObserverController(Observer cont){
         controllerObserver = cont;
     }
