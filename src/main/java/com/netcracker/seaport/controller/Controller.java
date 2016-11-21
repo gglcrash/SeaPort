@@ -1,11 +1,11 @@
-package main.java.com.netcracker.seaport.controller;
+package com.netcracker.seaport.controller;
 
-import main.java.com.netcracker.seaport.Unloader;
-import main.java.com.netcracker.seaport.Observer;
-import main.java.com.netcracker.seaport.logger.UnloadableLog;
-import main.java.com.netcracker.seaport.model.Broker;
-import main.java.com.netcracker.seaport.view.Drawing;
-import main.java.com.netcracker.seaport.Unloadable;
+import com.netcracker.seaport.Unloadable;
+import com.netcracker.seaport.Unloader;
+import com.netcracker.seaport.Observer;
+import com.netcracker.seaport.logger.UnloadableLog;
+import com.netcracker.seaport.model.Broker;
+import com.netcracker.seaport.view.Drawing;
 
 import java.util.ArrayList;
 import java.util.Collection;

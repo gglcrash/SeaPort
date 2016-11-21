@@ -1,13 +1,14 @@
-package main.java.com.netcracker.seaport.model;
+package com.netcracker.seaport.model;
 
-import main.java.com.netcracker.seaport.Observer;
-import main.java.com.netcracker.seaport.logger.UnloadableLog;
-import main.java.com.netcracker.seaport.Unloadable;
-import main.java.com.netcracker.seaport.Unloader;
+import com.netcracker.seaport.Observable;
+import com.netcracker.seaport.Observer;
+import com.netcracker.seaport.Unloadable;
+import com.netcracker.seaport.Unloader;
+import com.netcracker.seaport.logger.UnloadableLog;
 
 import java.util.*;
 
-public class Broker implements main.java.com.netcracker.seaport.Observable {
+public class Broker implements Observable {
     private Map<Unloadable,Integer> unloadableInSchedule = new HashMap<>();
     private ArrayList<Unloadable> unloadableArrived = new ArrayList<>();
     private Map<Unloadable,Unloader> unloadablesAtUnloaders = new HashMap<>();

@@ -1,7 +1,7 @@
-package main.java.com.netcracker.seaport.model.ship;
+package com.netcracker.seaport.model.ship;
 
-import main.java.com.netcracker.seaport.model.CargoType;
-import main.java.com.netcracker.seaport.Unloadable;
+import com.netcracker.seaport.model.CargoType;
+import com.netcracker.seaport.Unloadable;
 
 class Ship implements Unloadable{
     private String name;
