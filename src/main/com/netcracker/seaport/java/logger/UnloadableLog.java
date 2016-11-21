@@ -1,4 +1,4 @@
-package main.com.netcracker.seaport.logger;
+package main.com.netcracker.seaport.java.logger;
 
 public class UnloadableLog {
     private int arrival;

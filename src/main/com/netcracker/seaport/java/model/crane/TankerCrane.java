@@ -1,6 +1,6 @@
-package main.com.netcracker.seaport.model.crane;
+package main.com.netcracker.seaport.java.model.crane;
 
-import main.com.netcracker.seaport.model.CargoType;
+import main.com.netcracker.seaport.java.model.CargoType;
 
 public class TankerCrane extends Crane{
     public TankerCrane(){

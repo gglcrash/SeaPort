@@ -1,10 +1,10 @@
-package main.com.netcracker.seaport.model;
+package main.com.netcracker.seaport.java.model;
 
-import main.com.netcracker.seaport.Observable;
-import main.com.netcracker.seaport.Observer;
-import main.com.netcracker.seaport.Unloadable;
-import main.com.netcracker.seaport.Unloader;
-import main.com.netcracker.seaport.logger.UnloadableLog;
+import main.com.netcracker.seaport.java.Observable;
+import main.com.netcracker.seaport.java.Observer;
+import main.com.netcracker.seaport.java.Unloadable;
+import main.com.netcracker.seaport.java.Unloader;
+import main.com.netcracker.seaport.java.logger.UnloadableLog;
 
 import java.util.*;
 
