@@ -1,6 +1,6 @@
-package main.com.netcracker.seaport;
+package main.java.com.netcracker.seaport;
 
-import main.com.netcracker.seaport.model.CargoType;
+import main.java.com.netcracker.seaport.model.CargoType;
 
 public interface Unloader extends Drawable{
     CargoType getType();

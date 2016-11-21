@@ -1,6 +1,6 @@
-package main.com.netcracker.seaport.model.ship;
+package main.java.com.netcracker.seaport.model.ship;
 
-import main.com.netcracker.seaport.model.CargoType;
+import main.java.com.netcracker.seaport.model.CargoType;
 
 public class DryCargoShip extends Ship{
     public DryCargoShip(String name, int weight){
