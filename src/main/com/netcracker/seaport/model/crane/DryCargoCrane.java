@@ -1,6 +1,6 @@
-package crane;
+package main.com.netcracker.seaport.model.crane;
 
-import main.model.CargoType;
+import main.com.netcracker.seaport.model.CargoType;
 
 public class DryCargoCrane extends Crane{
     public DryCargoCrane(){

@@ -1,20 +1,14 @@
-package main.view;
+package main.com.netcracker.seaport.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-import main.interfaces.Drawable;
-import main.interfaces.Unloadable;
-import main.interfaces.Unloader;
+import main.com.netcracker.seaport.Unloadable;
+import main.com.netcracker.seaport.Unloader;
 import net.slashie.libjcsi.CSIColor;
-import net.slashie.libjcsi.CharKey;
 import net.slashie.libjcsi.ConsoleSystemInterface;
 import net.slashie.libjcsi.wswing.WSwingConsoleInterface;
-
-import static main.model.CargoType.CONTAINER;
-import static main.model.CargoType.DRYCARGO;
-import static main.model.CargoType.TANKER;
 
 public class Drawing {
     private static ConsoleSystemInterface csi;

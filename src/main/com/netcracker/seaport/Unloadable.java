@@ -1,6 +1,6 @@
-package main.interfaces;
+package main.com.netcracker.seaport;
 
-import main.model.CargoType;
+import main.com.netcracker.seaport.model.CargoType;
 
 public interface Unloadable extends Drawable{
     void setName(String name);
