@@ -3,21 +3,21 @@ package com.netcracker.seaport.model.ship;
 import com.netcracker.seaport.model.CargoType;
 import com.netcracker.seaport.Unloadable;
 
-class Ship implements Unloadable{
+class Ship implements Unloadable {
     private String name;
     private int weight;
     private CargoType type;
     private int daysInPort;
     private boolean isInPort;
-    private int x,y;
+    private int x, y;
 
 
     //логика создания рандомного корабля
-    public Ship(){
+    public Ship() {
 
     }
 
-    Ship(String name, int weight, CargoType type){
+    Ship(String name, int weight, CargoType type) {
         this.name = name;
         this.weight = weight;
         this.type = type;
@@ -44,10 +44,10 @@ class Ship implements Unloadable{
 
     @Override
     public void setWeight(int weight) {
-        if(weight>100){
+        if (weight > 100) {
             this.weight = 100;
         }
-        if(weight<0){
+        if (weight < 0) {
             this.weight = 0;
         }
     }
@@ -63,13 +63,13 @@ class Ship implements Unloadable{
     }
 
     @Override
-    public void setIsArrived(boolean arrived){
+    public void setIsArrived(boolean arrived) {
         this.isInPort = arrived;
     }
 
     @Override
     public void currentDayChanged(int day) {
-        if(isInPort){
+        if (isInPort) {
             daysInPort++;
         }
     }

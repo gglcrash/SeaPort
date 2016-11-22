@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
-public class Controller implements Observer{
+public class Controller implements Observer {
     private Broker broker;
     private Drawing drawer;
     private ArrayList<Unloadable> unloadableArrived;
@@ -20,43 +20,43 @@ public class Controller implements Observer{
     private Collection<UnloadableLog> logs;
 
 
-    public Controller (Broker broker, Drawing drawer){
+    public Controller(Broker broker, Drawing drawer) {
         this.broker = broker;
         this.drawer = drawer;
         this.broker.setObserverController(this);
         this.broker.notifyObservers();
     }
 
-    public void starSimulation(){
-        drawer.draw(unloadableArrived,unloadersList,unloadableAtUnloaders);
-    }
-
-    private void updateDataFromBroker(){
-        unloadableArrived = broker.getUnloadableArrived();
-        unloadersList = broker.getUnloadersList();
-        unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
+    public void starSimulation() {
+        broker.start();
     }
 
     @Override
     public void currentDayChanged(int day) {
         updateDataFromBroker();
         drawer.setDay(day);
-        drawer.draw(unloadableArrived,unloadersList,unloadableAtUnloaders);
+        drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
     }
 
-    public void addUnloadable(Unloadable unloadable, int day){
-        broker.addUnloadableInList(unloadable,day);
+    private void updateDataFromBroker() {
+        unloadableArrived = broker.getUnloadableArrived();
+        unloadersList = broker.getUnloadersList();
+        unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
     }
 
-    public void pause(){
+    public void addUnloadable(Unloadable unloadable, int day) {
+        broker.addUnloadableInList(unloadable, day);
+    }
+
+    public void pause() {
         broker.pause();
     }
 
-    public void resume(){
-        broker.resume();
+    public void resume() {
+        broker.start();
     }
 
-    private void getLogs(){
+    private void getLogs() {
         logs = broker.getUnloadableLogs();
 
     }

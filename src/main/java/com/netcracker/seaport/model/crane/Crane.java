@@ -8,14 +8,14 @@ class Crane implements Unloader {
     private int complexity;
     private boolean isAvailable;
     private int endUnloadingDay;
-    private int x,y;
+    private int x, y;
 
     // логика создания рандомного крана
-    protected  Crane(){
+    protected Crane() {
 
     }
 
-    protected Crane(int complexity, CargoType type){
+    protected Crane(int complexity, CargoType type) {
         this.type = type;
         this.complexity = complexity;
         setAvailability(true);
@@ -44,14 +44,14 @@ class Crane implements Unloader {
     }
 
     @Override
-    public void startUnloading(int day){
+    public void startUnloading(int day) {
         setAvailability(false);
         endUnloadingDay = day;
     }
 
     @Override
     public void currentDayChanged(int day) {
-        if(endUnloadingDay == day){
+        if (endUnloadingDay == day) {
             setAvailability(true);
         }
     }
