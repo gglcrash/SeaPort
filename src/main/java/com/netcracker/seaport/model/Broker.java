@@ -54,6 +54,11 @@ public class Broker implements Observable {
         observersList.add(newUnloadable);
     }
 
+    public Broker addUnloaderInList (Unloader unloader) {
+        unloadersList.add(unloader);
+        return this;
+    }
+
     public int getUnloadedCount(){
         return finishedUnloadCount;
     }

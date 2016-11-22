@@ -28,12 +28,9 @@ public class Controller implements Observer {
     }
 
     public Controller (Broker broker, Drawing drawer) {
-    //    setBroker(broker);
-    //    setDrawer(drawer);
+        setBroker(broker);
+        setDrawer(drawer);
         isActive = false;
-        this.broker = broker;
-        this.drawer = drawer;
-        broker.setObserverController(this);
     }
 
     public Controller setBroker (Broker broker) {
@@ -47,10 +44,10 @@ public class Controller implements Observer {
         return this;
     }
 
-    public void starSimulation() {
-        if(!isActive) {
+    public void starSimulation () {
+        if (!isActive) {
             broker.start();
-            isActive=true;
+            isActive = true;
         }
     }
 
@@ -59,8 +56,9 @@ public class Controller implements Observer {
         updateDataFromBroker();
         drawer.setDay(day);
         drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
-        if(day==31){
-            drawer.drawStatistics(broker.getUnloadedCount(), broker.getFineSum(),broker.getAverageDelay());
+        if (day == 31) {
+            drawer.drawStatistics(broker.getUnloadedCount(),
+                broker.getFineSum(), broker.getAverageDelay());
         }
     }
 
@@ -68,33 +66,60 @@ public class Controller implements Observer {
         broker.addUnloadableInList(unloadable, day);
     }
 
+    public void addUnloader (Unloader unloader) {
+        broker.addUnloaderInList(unloader);
+    }
+
     public void pauseSimulation () {
         broker.pause();
     }
 
-    private void updateDataFromBroker() {
+    private void updateDataFromBroker () {
         unloadableArrived = broker.getUnloadableArrived();
         unloadersList = broker.getUnloadersList();
         unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
     }
 
-    public void pause() {
+    public void pause () {
         broker.pause();
     }
 
-    public void resume() {
+    public void resume () {
         broker.start();
     }
 
-    private void getLogs() {
+    private void getLogs () {
         logs = broker.getUnloadableLogs();
     }
 
-    //TODO: Реализовать
     //Первый элемент в settings: "ship", "ships=число", "fine=число" или
     // "cranes". Соответствует типу возможных настроек
-    private Controller tuneSimulation (String[] settings) {
-        return null;
+    public Controller tuneSimulation (String[] settings) {
+        String det = getDetermineSubstring(settings[0]);
+
+        switch (det) {
+            case "ship.":
+                addUnloadable(Parser.getUnloadable(settings), 10);
+                break;
+            case "ships":
+                Parser.getShipList(settings).forEach(
+                    i -> addUnloadable(i, 10));
+                break;
+            case "fine=":
+                //ToDo: Нужно этот штраф как-то устанавливать.
+                Parser.getFine(settings);
+                break;
+            case "crane":
+                Parser.getCraneList(settings).forEach(this::addUnloader);
+                break;
+        }
+
+        return this;
+    }
+
+    private String getDetermineSubstring (String s) {
+        // "ship" короче пяти, а различать с "ships" как-то надо...
+        return (s + "..").substring(0, 5);
     }
 
     //TODO: Реализовать

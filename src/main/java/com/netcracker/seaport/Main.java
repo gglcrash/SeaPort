@@ -21,12 +21,12 @@ public class Main {
 
         // где-то тут формируется результат пользовательского ввода и по этим
         // данным создается брокер
-      //  Drawing drawer = new Drawing();
-      //  UserInteraction userInteraction = new UserInteraction(drawer);
-      //  Controller controller = new Controller(userInteraction);
+        Drawing drawer = new Drawing();
+        UserInteraction userInteraction = new UserInteraction(drawer);
+        Controller controller = new Controller(userInteraction);
 
-    //    userInteraction.greetUser();
-    //    userInteraction.run();
+        userInteraction.greetUser();
+        userInteraction.run();
 
         Map<Unloadable, Integer> shipsInSchedule =
             new HashMap<>();  // <разгружаемый,ожидаемый день прибытия>
@@ -54,14 +54,8 @@ public class Main {
         cranesInPort.add(new TankerCrane());
 
         Broker broker = new Broker(shipsInSchedule, cranesInPort);
-        Drawing drawer = new Drawing();
-        Controller myCont = new Controller(broker, drawer);
-        myCont.starSimulation();
-        //controller.setBroker(broker).setDrawer(drawer).starSimulation();
-
-//TODO: Симуляция теперь запускается пользователем. Нужно, чтобы контроллер
-//TODO: умел обрабатывать несколько запусков подряд
-        //controller.starSimulation();
+        //myCont.starSimulation();
+        controller.setBroker(broker).setDrawer(drawer).starSimulation();
 
     }
 

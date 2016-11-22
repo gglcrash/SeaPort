@@ -1,12 +1,6 @@
 package com.netcracker.seaport.view;
 
 
-import com.netcracker.seaport.Unloader;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-
 import com.netcracker.seaport.Unloadable;
 import com.netcracker.seaport.Unloader;
 import net.slashie.libjcsi.CSIColor;
@@ -40,12 +34,14 @@ public class Drawing {
         this.day = day;
     }
 
-    public void draw(ArrayList<Unloadable> unloadableArrived, ArrayList<Unloader> unloadersList,
-                     Set<Unloadable> unloadableAtUnloaders) {
+    public void draw (ArrayList<Unloadable> unloadableArrived,
+        ArrayList<Unloader> unloadersList,
+        Set<Unloadable> unloadableAtUnloaders) {
 
         csi.cls();
         csi.print(60, 8, "Current day: " + day, CSIColor.WHITE);
-        csi.print(60, 9, "Ships in queue: " + unloadableArrived.size(), CSIColor.WHITE);
+        csi.print(60, 9, "Ships in queue: " + unloadableArrived.size(),
+            CSIColor.WHITE);
         csi.print(60, 5, "TANKER", CSIColor.GREEN);
         csi.print(60, 6, "CONTAINER", CSIColor.RED);
         csi.print(60, 7, "DRYCARGO", CSIColor.BLUE);
@@ -75,7 +71,8 @@ public class Drawing {
 
     }
 
-    private void drawUnloadables (Collection<Unloadable> unloadables, boolean drawWeight) {
+    private void drawUnloadables (Collection<Unloadable> unloadables,
+        boolean drawWeight) {
         for (Unloadable unloadable : unloadables) {
 
             CSIColor color = CSIColor.WHITE;
@@ -94,10 +91,12 @@ public class Drawing {
                 }
             }
 
-            if(drawWeight){
-                csi.print(unloadable.getX(), unloadable.getY()-1, unloadable.getWeight()+"", CSIColor.WHITE);
+            if (drawWeight) {
+                csi.print(unloadable.getX(), unloadable.getY() - 1,
+                    unloadable.getWeight() + "", CSIColor.WHITE);
             }
-            csi.print(unloadable.getX(), unloadable.getY(), unloadable.getName(), color);
+            csi.print(unloadable.getX(), unloadable.getY(),
+                unloadable.getName(), color);
         }
     }
 
@@ -107,7 +106,8 @@ public class Drawing {
         return this;
     }
 
-    public void drawStatistics(int unloadedCount, int fineSum,int averageDelay){
+    public void drawStatistics (int unloadedCount, int fineSum,
+        int averageDelay) {
         csi.print(60, 12, "Unloaded count: " + unloadedCount, CSIColor.WHITE);
         csi.print(60, 13, "Fine sum: " + fineSum, CSIColor.WHITE);
         csi.print(60, 14, "AVG delay: " + averageDelay, CSIColor.WHITE);
