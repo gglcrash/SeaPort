@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class Controller implements Observer {
+    private boolean isActive;
     private Broker broker;
     private Drawing drawer;
     private UserInteraction ui;
@@ -29,6 +30,7 @@ public class Controller implements Observer {
     public Controller (Broker broker, Drawing drawer) {
     //    setBroker(broker);
     //    setDrawer(drawer);
+        isActive = false;
         this.broker = broker;
         this.drawer = drawer;
         broker.setObserverController(this);
@@ -37,7 +39,6 @@ public class Controller implements Observer {
     public Controller setBroker (Broker broker) {
         this.broker = broker;
         this.broker.setObserverController(this);
-        this.broker.notifyObservers();
         return this;
     }
 
@@ -47,7 +48,10 @@ public class Controller implements Observer {
     }
 
     public void starSimulation() {
-        broker.start();
+        if(!isActive) {
+            broker.start();
+            isActive=true;
+        }
     }
 
     @Override
@@ -55,6 +59,9 @@ public class Controller implements Observer {
         updateDataFromBroker();
         drawer.setDay(day);
         drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
+        if(day==31){
+            drawer.drawStatistics(broker.getUnloadedCount(), broker.getFineSum(),broker.getAverageDelay());
+        }
     }
 
     public void addUnloadable (Unloadable unloadable, int day) {

@@ -39,9 +39,10 @@ public class Main {
         shipsInSchedule.put(new TankerShip("korob", 55), 5);
         shipsInSchedule.put(new ContainerShip("hren", 59), 6);
         shipsInSchedule.put(new ContainerShip("rediska", 80), 7);
-        shipsInSchedule.put(new DryCargoShip("korabl", 23), 8);
+        shipsInSchedule.put(new DryCargoShip("korabl", 43), 8);
+        shipsInSchedule.put(new DryCargoShip("kniga", 73), 8);
+        shipsInSchedule.put(new DryCargoShip("polet", 65), 10);
         shipsInSchedule.put(new TankerShip("dratuti", 90), 1);
-        shipsInSchedule.put(new TankerShip("privet", 60), 2);
         shipsInSchedule.put(new ContainerShip("plavatel", 50), 3);
         shipsInSchedule.put(new ContainerShip("spasatel", 40), 4);
         shipsInSchedule.put(new DryCargoShip("lustra", 30), 5);

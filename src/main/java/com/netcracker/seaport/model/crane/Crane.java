@@ -1,26 +1,36 @@
 package com.netcracker.seaport.model.crane;
 
+import com.netcracker.seaport.Unloadable;
 import com.netcracker.seaport.Unloader;
 import com.netcracker.seaport.model.CargoType;
 
 class Crane implements Unloader {
     private CargoType type;
-    private int complexity;
+    private int perfomance;
     private boolean isAvailable;
     private int endUnloadingDay;
     private int x, y;
+    private Unloadable unloadable;
 
-    // логика создания рандомного крана
-    protected Crane() {
-
-    }
-
-    protected Crane(int complexity, CargoType type) {
+    protected Crane(int perfomance, CargoType type) {
         this.type = type;
-        this.complexity = complexity;
+        this.perfomance = perfomance;
         setAvailability(true);
         setX(0);
         setY(0);
+    }
+
+    @Override
+    public void setUnloadable(Unloadable unloadable){
+        this.unloadable = unloadable;
+        setAvailability(false);
+        unloadPerDay();
+    }
+
+    private void unloadPerDay(){
+        int tmp = unloadable.getWeight();
+        int val = tmp - perfomance;
+        unloadable.setWeight(val);
     }
 
     @Override
@@ -28,9 +38,8 @@ class Crane implements Unloader {
         return type;
     }
 
-    @Override
-    public int getComplexity() {
-        return complexity;
+    public int getPerfomance() {
+        return perfomance;
     }
 
     @Override
@@ -44,16 +53,18 @@ class Crane implements Unloader {
     }
 
     @Override
-    public void startUnloading(int day) {
-        setAvailability(false);
-        endUnloadingDay = day;
-    }
-
-    @Override
     public void currentDayChanged(int day) {
-        if (endUnloadingDay == day) {
+       /* if (endUnloadingDay == day) {
             setAvailability(true);
-        }
+        }*/
+       if(unloadable!=null) {
+           unloadPerDay();
+
+           if (unloadable.getWeight() == 0) {
+               setAvailability(true);
+               unloadable = null;
+           }
+       }
     }
 
     @Override

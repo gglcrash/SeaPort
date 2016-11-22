@@ -15,18 +15,21 @@ public class Broker implements Observable {
     private ArrayList<Unloader> unloadersList = new ArrayList<>();
     private ArrayList<Observer> observersList = new ArrayList<>();
     private Map<Unloadable, UnloadableLog> logsOfUnloadables = new HashMap<>();
+    private ArrayList<Integer> delayList = new ArrayList<>();
     private Observer controllerObserver;
     private Timer timer;
     private int fineSum;
     private int finishedUnloadCount = 0;
     private int currentDay;
     private int totalArrivedCount = 0;
+    private boolean isActive;
 
     public Broker(Map<Unloadable, Integer> unloadableMap, ArrayList<Unloader> unloaderList) {
         unloadableInSchedule = unloadableMap;
         unloadersList = unloaderList;
         setObserversList();
         setCranesCoordinates(unloaderList);
+        isActive = false;
     }
 
     //region Lists
@@ -50,14 +53,36 @@ public class Broker implements Observable {
         unloadableInSchedule.put(newUnloadable, expectedDay);
         observersList.add(newUnloadable);
     }
+
+    public int getUnloadedCount(){
+        return finishedUnloadCount;
+    }
+
+    public int getFineSum(){
+        return fineSum;
+    }
+
+    public int getAverageDelay(){
+        int sumDelay = 0;
+        for (int delay : delayList){
+            sumDelay+=delay;
+        }
+        return sumDelay/delayList.size();
+    }
+
+    public boolean getIsActive(){
+        return isActive;
+    }
     //endregion
 
     //region Timer Logic
     public void pause() {
         timer.cancel();
+        isActive = false;
     }
 
     public void start() {
+        isActive = true;
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -77,6 +102,7 @@ public class Broker implements Observable {
         notifyObservers();
 
         if (currentDay == 31) {
+            isActive=false;
             pause();
         }
     }
@@ -116,15 +142,17 @@ public class Broker implements Observable {
                     if (unloadable.getType() == unloader.getType()) {
                         logUnloadableToUnloader(unloadable);
 
-                        int delay = calculateDelayForUnloadable(unloadable);
-                        int daysForUnload = calculateDaysForUnload(unloadable, unloader) + delay;
-                        fineSum += calculateFine(unloadable.getType(), delay);
-                        unloader.startUnloading(daysForUnload + currentDay);
+                        int randomDelay = calculateDelayForUnloadable(unloadable);
+                        int daysForUnload = calculateDaysForUnload(unloadable, unloader) + randomDelay;
+                        //unloader.startUnloading(daysForUnload + currentDay);
+                        unloader.setUnloadable(unloadable);
 
                         unloadable.setX(unloader.getX());
                         unloadable.setY(unloader.getY() - 1);
                         unloadablesAtUnloaders.put(unloadable, unloader);
                         unloadableArrived.remove(unloadable);
+
+                        delayList.add(getUnloadDelay(unloadable));
                         break;
                     }
                 }
@@ -147,6 +175,13 @@ public class Broker implements Observable {
     //endregion
 
     //region Calculations
+    private int getUnloadDelay(Unloadable unloadable){
+        UnloadableLog log = logsOfUnloadables.get(unloadable);
+        int delay =  log.getUnloadStart()-log.getArrival();
+        fineSum += calculateFine(unloadable.getType(), delay);
+        return delay;
+    }
+
     private void setCranesCoordinates(ArrayList<Unloader> unloaders) {
         for (int i = 0; i < unloaders.size(); i++) {
             unloaders.get(i).setY(20);
@@ -163,7 +198,7 @@ public class Broker implements Observable {
 
     private int calculateDaysForUnload(Unloadable unloadable, Unloader unloader) {
         int weight = unloadable.getWeight();
-        int complexity = unloader.getComplexity();
+        int complexity = unloader.getPerfomance();
         int variable = 1;
         if (weight > 45) {
             variable = 2;
@@ -179,12 +214,20 @@ public class Broker implements Observable {
         return rand.nextInt(3);
     }
 
-    private int calculateAverageDelay() {
-        return 0;
-    }
-
     private int calculateFine(CargoType type, int delay) {
-        return 0;
+        int value = 0;
+        switch (type){
+            case DRYCARGO:
+                value = 2000;
+                break;
+            case TANKER:
+                value = 1000;
+                break;
+            case CONTAINER:
+                value = 1500;
+                break;
+        }
+        return value*delay;
     }
     //endregion
 

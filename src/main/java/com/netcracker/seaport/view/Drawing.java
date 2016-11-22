@@ -44,14 +44,14 @@ public class Drawing {
                      Set<Unloadable> unloadableAtUnloaders) {
 
         csi.cls();
-        csi.print(60, 11, "Current day: " + day, CSIColor.WHITE);
-        csi.print(60, 12, "Ships in queue: " + unloadableArrived.size(), CSIColor.WHITE);
-        csi.print(60, 8, "TANKER", CSIColor.GREEN);
-        csi.print(60, 9, "CONTAINER", CSIColor.RED);
-        csi.print(60, 10, "DRYCARGO", CSIColor.BLUE);
+        csi.print(60, 8, "Current day: " + day, CSIColor.WHITE);
+        csi.print(60, 9, "Ships in queue: " + unloadableArrived.size(), CSIColor.WHITE);
+        csi.print(60, 5, "TANKER", CSIColor.GREEN);
+        csi.print(60, 6, "CONTAINER", CSIColor.RED);
+        csi.print(60, 7, "DRYCARGO", CSIColor.BLUE);
 
-        drawUnloadables(unloadableArrived);
-        drawUnloadables(unloadableAtUnloaders);
+        drawUnloadables(unloadableArrived, false);
+        drawUnloadables(unloadableAtUnloaders, true);
 
         for (Unloader unloader : unloadersList) {
             CSIColor color = CSIColor.WHITE;
@@ -75,7 +75,7 @@ public class Drawing {
 
     }
 
-    private void drawUnloadables (Collection<Unloadable> unloadables) {
+    private void drawUnloadables (Collection<Unloadable> unloadables, boolean drawWeight) {
         for (Unloadable unloadable : unloadables) {
 
             CSIColor color = CSIColor.WHITE;
@@ -94,6 +94,9 @@ public class Drawing {
                 }
             }
 
+            if(drawWeight){
+                csi.print(unloadable.getX(), unloadable.getY()-1, unloadable.getWeight()+"", CSIColor.WHITE);
+            }
             csi.print(unloadable.getX(), unloadable.getY(), unloadable.getName(), color);
         }
     }
@@ -102,5 +105,11 @@ public class Drawing {
         csi.print(USER_TEXT_COORDINATES.x, USER_TEXT_COORDINATES.y, text);
 
         return this;
+    }
+
+    public void drawStatistics(int unloadedCount, int fineSum,int averageDelay){
+        csi.print(60, 12, "Unloaded count: " + unloadedCount, CSIColor.WHITE);
+        csi.print(60, 13, "Fine sum: " + fineSum, CSIColor.WHITE);
+        csi.print(60, 14, "AVG delay: " + averageDelay, CSIColor.WHITE);
     }
 }
