@@ -1,5 +1,12 @@
 package com.netcracker.seaport.view;
 
+
+import com.netcracker.seaport.Unloader;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+
 import com.netcracker.seaport.Unloadable;
 import com.netcracker.seaport.Unloader;
 import net.slashie.libjcsi.CSIColor;
@@ -28,23 +35,17 @@ public class Drawing {
         }
         return csi;
     }
- /*   public void startDrawing(){
-        csi = new WSwingConsoleInterface("RogueLike", true);
-        run();
-    }*/
 
     public void setDay (int day) {
         this.day = day;
     }
 
-    public void draw (ArrayList<Unloadable> unloadableArrived,
-        ArrayList<Unloader> unloadersList,
-        Set<Unloadable> unloadableAtUnloaders) {
+    public void draw(ArrayList<Unloadable> unloadableArrived, ArrayList<Unloader> unloadersList,
+                     Set<Unloadable> unloadableAtUnloaders) {
 
         csi.cls();
         csi.print(60, 11, "Current day: " + day, CSIColor.WHITE);
-        csi.print(60, 12, "Ships in queue: " + unloadableArrived.size(),
-            CSIColor.WHITE);
+        csi.print(60, 12, "Ships in queue: " + unloadableArrived.size(), CSIColor.WHITE);
         csi.print(60, 8, "TANKER", CSIColor.GREEN);
         csi.print(60, 9, "CONTAINER", CSIColor.RED);
         csi.print(60, 10, "DRYCARGO", CSIColor.BLUE);
@@ -93,9 +94,7 @@ public class Drawing {
                 }
             }
 
-            csi.print(unloadable.getX(), unloadable.getY(),
-                unloadable.getName(), color);
-
+            csi.print(unloadable.getX(), unloadable.getY(), unloadable.getName(), color);
         }
     }
 

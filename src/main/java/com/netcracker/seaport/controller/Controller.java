@@ -27,8 +27,11 @@ public class Controller implements Observer {
     }
 
     public Controller (Broker broker, Drawing drawer) {
-        setBroker(broker);
-        setDrawer(drawer);
+    //    setBroker(broker);
+    //    setDrawer(drawer);
+        this.broker = broker;
+        this.drawer = drawer;
+        broker.setObserverController(this);
     }
 
     public Controller setBroker (Broker broker) {
@@ -43,8 +46,8 @@ public class Controller implements Observer {
         return this;
     }
 
-    public void starSimulation () {
-        drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
+    public void starSimulation() {
+        broker.start();
     }
 
     @Override
@@ -52,12 +55,6 @@ public class Controller implements Observer {
         updateDataFromBroker();
         drawer.setDay(day);
         drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
-    }
-
-    private void updateDataFromBroker () {
-        unloadableArrived = broker.getUnloadableArrived();
-        unloadersList = broker.getUnloadersList();
-        unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
     }
 
     public void addUnloadable (Unloadable unloadable, int day) {
@@ -68,13 +65,22 @@ public class Controller implements Observer {
         broker.pause();
     }
 
-    public void resume () {
-        broker.resume();
+    private void updateDataFromBroker() {
+        unloadableArrived = broker.getUnloadableArrived();
+        unloadersList = broker.getUnloadersList();
+        unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
     }
 
-    private void getLogs () {
-        logs = broker.getUnloadableLogs();
+    public void pause() {
+        broker.pause();
+    }
 
+    public void resume() {
+        broker.start();
+    }
+
+    private void getLogs() {
+        logs = broker.getUnloadableLogs();
     }
 
     //TODO: Реализовать
@@ -85,7 +91,8 @@ public class Controller implements Observer {
     }
 
     //TODO: Реализовать
-    private Controller stopSimulation () {
+    public Controller stopSimulation () {
         return null;
     }
+
 }

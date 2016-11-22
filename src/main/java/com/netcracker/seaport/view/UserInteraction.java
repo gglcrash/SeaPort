@@ -68,7 +68,7 @@ public class UserInteraction extends Thread {
                 continue;
             }
             String[] splittedInput = input.split(" +");
-            controller.tuneSimulation(splittedInput);
+          //  controller.tuneSimulation(splittedInput);
         }
     }
 
