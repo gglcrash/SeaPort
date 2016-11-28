@@ -5,7 +5,13 @@ import com.netcracker.seaport.Unloadable;
 import com.netcracker.seaport.Unloader;
 import com.netcracker.seaport.logger.UnloadableLog;
 import com.netcracker.seaport.model.Broker;
-import com.netcracker.seaport.view.Drawing;
+import com.netcracker.seaport.model.crane.ContainerCrane;
+import com.netcracker.seaport.model.crane.DryCargoCrane;
+import com.netcracker.seaport.model.crane.TankerCrane;
+import com.netcracker.seaport.model.ship.ContainerShip;
+import com.netcracker.seaport.model.ship.DryCargoShip;
+import com.netcracker.seaport.model.ship.TankerShip;
+import com.netcracker.seaport.view.Drawer;
 import com.netcracker.seaport.view.UserInteraction;
 
 import java.util.ArrayList;
@@ -15,21 +21,26 @@ import java.util.Set;
 public class Controller implements Observer {
     private boolean isActive;
     private Broker broker;
-    private Drawing drawer;
+    private Drawer drawer;
     private UserInteraction ui;
     private ArrayList<Unloadable> unloadableArrived;
     private ArrayList<Unloader> unloadersList;
     private Set<Unloadable> unloadableAtUnloaders;
     private Collection<UnloadableLog> logs;
+    private boolean isDefault = true;
 
-    public Controller (UserInteraction ui) {
-        this.ui = ui;
-        ui.setController(this);
+    public Controller () {
+        this(new Broker(), new Drawer());
     }
 
-    public Controller (Broker broker, Drawing drawer) {
+    public Controller (Broker broker, Drawer drawer) {
+        this(broker, drawer, new UserInteraction(drawer));
+    }
+
+    public Controller (Broker broker, Drawer drawer, UserInteraction ui) {
         setBroker(broker);
         setDrawer(drawer);
+        setUi(ui);
         isActive = false;
     }
 
@@ -39,39 +50,77 @@ public class Controller implements Observer {
         return this;
     }
 
-    public Controller setDrawer (Drawing drawer) {
+    public Controller setDrawer (Drawer drawer) {
         this.drawer = drawer;
         return this;
     }
 
-    public void starSimulation () {
+    private Controller setUi (UserInteraction ui) {
+        this.ui = ui;
+        ui.setController(this);
+        return this;
+    }
+
+    public Controller (UserInteraction ui) {
+        this(new Broker(), ui.getDrawer(), ui);
+    }
+
+    private void addUnloader (Unloader unloader) {
+        broker.addUnloaderInList(unloader);
+    }
+
+    public Controller begin () {
+        ui.greetUser();
+        ui.start();
+
+        return this;
+    }
+
+    public void startSimulation () {
+        if (isDefault) {
+            setDefaultSettings();
+        }
         if (!isActive) {
             broker.start();
             isActive = true;
         }
     }
 
+    private Controller setDefaultSettings () {
+        broker.addUnloadableInList(new ContainerShip("nova", 50), 1);
+        broker.addUnloadableInList(new ContainerShip("hulio", 40), 2);
+        broker.addUnloadableInList(new DryCargoShip("average", 70), 3);
+        broker.addUnloadableInList(new TankerShip("smvetlo", 60), 4);
+        broker.addUnloadableInList(new TankerShip("korob", 55), 5);
+        broker.addUnloadableInList(new ContainerShip("hren", 59), 6);
+        broker.addUnloadableInList(new ContainerShip("rediska", 80), 7);
+        broker.addUnloadableInList(new DryCargoShip("korabl", 43), 8);
+        broker.addUnloadableInList(new DryCargoShip("kniga", 73), 8);
+        broker.addUnloadableInList(new DryCargoShip("polet", 65), 10);
+        broker.addUnloadableInList(new TankerShip("dratuti", 90), 1);
+        broker.addUnloadableInList(new ContainerShip("plavatel", 50), 3);
+        broker.addUnloadableInList(new ContainerShip("spasatel", 40), 4);
+        broker.addUnloadableInList(new DryCargoShip("lustra", 30), 5);
+        broker.addUnloadableInList(new TankerShip("sobaka", 90), 6);
+        broker.addUnloadableInList(new TankerShip("koshka", 35), 7);
+
+        broker.addUnloaderInList(new ContainerCrane());
+        broker.addUnloaderInList(new DryCargoCrane());
+        broker.addUnloaderInList(new TankerCrane());
+
+        return this;
+    }
+
     @Override
     public void currentDayChanged (int day) {
         updateDataFromBroker();
         drawer.setDay(day);
-        drawer.draw(unloadableArrived, unloadersList, unloadableAtUnloaders);
+        drawer.setToDraw(unloadableArrived, unloadersList,
+            unloadableAtUnloaders);
         if (day == 31) {
             drawer.drawStatistics(broker.getUnloadedCount(),
                 broker.getFineSum(), broker.getAverageDelay());
         }
-    }
-
-    public void addUnloadable (Unloadable unloadable, int day) {
-        broker.addUnloadableInList(unloadable, day);
-    }
-
-    public void addUnloader (Unloader unloader) {
-        broker.addUnloaderInList(unloader);
-    }
-
-    public void pauseSimulation () {
-        broker.pause();
     }
 
     private void updateDataFromBroker () {
@@ -80,12 +129,9 @@ public class Controller implements Observer {
         unloadableAtUnloaders = broker.getUnloadablesAtUnloaders();
     }
 
-    public void pause () {
-        broker.pause();
-    }
-
     public void resume () {
         broker.start();
+        isActive = true;
     }
 
     private void getLogs () {
@@ -99,21 +145,20 @@ public class Controller implements Observer {
 
         switch (det) {
             case "ship.":
-                addUnloadable(Parser.getUnloadable(settings), 10);
+                addUnloadable(Parser.getShip(settings), 10);
                 break;
             case "ships":
-                Parser.getShipList(settings).forEach(
-                    i -> addUnloadable(i, 10));
+                Parser.getShipList(settings).forEach(i -> addUnloadable(i, 10));
                 break;
             case "fine=":
-                //ToDo: Нужно этот штраф как-то устанавливать.
-                Parser.getFine(settings);
+                broker.setFineSum(Parser.getFine(settings));
                 break;
             case "crane":
                 Parser.getCraneList(settings).forEach(this::addUnloader);
                 break;
         }
 
+        isDefault = false;
         return this;
     }
 
@@ -122,9 +167,21 @@ public class Controller implements Observer {
         return (s + "..").substring(0, 5);
     }
 
-    //TODO: Реализовать
+    private void addUnloadable (Unloadable unloadable, int day) {
+        broker.addUnloadableInList(unloadable, day);
+    }
+
     public Controller stopSimulation () {
-        return null;
+        pauseSimulation();
+        broker = new Broker();
+        isDefault = true;
+
+        return this;
+    }
+
+    public void pauseSimulation () {
+        broker.pause();
+        isActive = false;
     }
 
 }

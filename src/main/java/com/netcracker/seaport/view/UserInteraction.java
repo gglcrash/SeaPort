@@ -5,12 +5,14 @@ import net.slashie.libjcsi.CharKey;
 import net.slashie.libjcsi.ConsoleSystemInterface;
 
 public class UserInteraction extends Thread {
-    private final Drawing drawer;
-    private Controller controller;
-    private ConsoleSystemInterface csi = Drawing.getCsi();
 
-    public UserInteraction (Drawing drawer) {
-        this.drawer = drawer;
+    private Drawer drawer;
+    private Thread drawThread;
+    private Controller controller;
+    private ConsoleSystemInterface csi = Drawer.getCsi();
+
+    public UserInteraction (Drawer drawer) {
+        setDrawer(drawer);
     }
 
     public UserInteraction setController (Controller controller) {
@@ -20,11 +22,22 @@ public class UserInteraction extends Thread {
         return this;
     }
 
+    public Drawer getDrawer () {
+        return drawer;
+    }
+
+    private UserInteraction setDrawer (Drawer drawer) {
+        this.drawer = drawer;
+        this.drawThread = new Thread(drawer::draw);
+        return this;
+    }
+
     @Override
     public void run () {
-        CharKey key = csi.inkey();
-        if (key.code == CharKey.MINUS) {
-            key = csi.inkey();
+        drawThread.start();
+        boolean end = false;
+        do {
+            CharKey key = csi.inkey();
             switch (key.toString()) {
                 case "h":
                     showHelp();
@@ -37,26 +50,26 @@ public class UserInteraction extends Thread {
                     break;
                 case "q":
                     quitApplication();
+                    end = true;
                     break;
                 case "p":
                     pauseSimulation();
                     break;
+                case "r":
+                    resumeSimulation();
+                    break;
                 default:
                     showUnknownCommandMessage();
             }
-        }
+        } while (!end);
     }
 
-    private void showUnknownCommandMessage () {
-        drawer.printForUser(UserInteractionStrings.UNKNOWN_COMMAND);
+    private void showHelp () {
+        drawer.setTextForUser(UserInteractionStrings.HELP_TEXT);
     }
 
-    private void pauseSimulation () {
-        controller.pauseSimulation();
-    }
-
-    private void quitApplication () {
-        controller.stopSimulation();
+    private void startSimulation () {
+        controller.startSimulation();
     }
 
     private void startTuning () {
@@ -65,11 +78,26 @@ public class UserInteraction extends Thread {
 
             if (!isValid(input)) {
                 showUnknownCommandMessage();
-                continue;
+            } else {
+                controller.tuneSimulation(input.split(" +"));
             }
-            String[] splittedInput = input.split(" +");
-            controller.tuneSimulation(splittedInput);
         }
+    }
+
+    private void quitApplication () {
+        controller.stopSimulation();
+    }
+
+    private void pauseSimulation () {
+        controller.pauseSimulation();
+    }
+
+    private void resumeSimulation () {
+        controller.resume();
+    }
+
+    private void showUnknownCommandMessage () {
+        drawer.setTextForUser(UserInteractionStrings.UNKNOWN_COMMAND);
     }
 
     private boolean isValid (String s) {
@@ -84,16 +112,8 @@ public class UserInteraction extends Thread {
             shipAmountRegex) || s.matches(fineRegex);
     }
 
-    private void startSimulation () {
-        controller.starSimulation();
-    }
-
-    private void showHelp () {
-        drawer.printForUser(UserInteractionStrings.HELP_TEXT);
-    }
-
     public void greetUser () {
-        drawer.printForUser(UserInteractionStrings.USER_GREETING);
+        drawer.setTextForUser(UserInteractionStrings.USER_GREETING);
     }
 
     private static final class UserInteractionStrings {

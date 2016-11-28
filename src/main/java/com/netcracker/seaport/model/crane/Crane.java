@@ -6,18 +6,18 @@ import com.netcracker.seaport.model.CargoType;
 
 class Crane implements Unloader {
     private CargoType type;
-    private int perfomance;
+    private int performance;
     private boolean isAvailable;
     private int endUnloadingDay;
     private int x, y;
     private Unloadable unloadable;
 
-    protected Crane(int perfomance, CargoType type) {
+    protected Crane (int performance, CargoType type) {
         this.type = type;
-        this.perfomance = perfomance;
+        this.performance = performance;
         setAvailability(true);
         setX(0);
-        setY(0);
+        setY(3);
     }
 
     @Override
@@ -29,7 +29,7 @@ class Crane implements Unloader {
 
     private void unloadPerDay(){
         int tmp = unloadable.getWeight();
-        int val = tmp - perfomance;
+        int val = tmp - performance;
         unloadable.setWeight(val);
     }
 
@@ -38,8 +38,8 @@ class Crane implements Unloader {
         return type;
     }
 
-    public int getPerfomance() {
-        return perfomance;
+    public int getPerformance () {
+        return performance;
     }
 
     @Override
@@ -48,7 +48,7 @@ class Crane implements Unloader {
     }
 
     @Override
-    public boolean getAvailability() {
+    public boolean isAvailable () {
         return isAvailable;
     }
 

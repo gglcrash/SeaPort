@@ -12,11 +12,11 @@ import com.netcracker.seaport.model.ship.TankerShip;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parser {
+class Parser {
     private static int unnamedShipsCount = 0;
     private static int defaultWeight = 30;
 
-    public static Unloadable getUnloadable (String[] settings) {
+    static Unloadable getShip (String[] settings) {
         String name = settings[1].substring(5);
         int weight = Integer.parseInt(settings[3].substring(7));
         switch (settings[2]) {
@@ -31,7 +31,7 @@ public class Parser {
         }
     }
 
-    public static List<Unloadable> getShipList (String[] settings) {
+    static List<Unloadable> getShipList (String[] settings) {
         int number = Integer.parseInt(settings[0].substring(6));
         List<Unloadable> retValue = new ArrayList<>(number);
         for (int i = 0; i < number; ++i) {
@@ -42,11 +42,11 @@ public class Parser {
         return retValue;
     }
 
-    public static int getFine (String[] settings) {
+    static int getFine (String[] settings) {
         return Integer.parseInt(settings[0].substring(5));
     }
 
-    public static List<Unloader> getCraneList (String[] settings) {
+    static List<Unloader> getCraneList (String[] settings) {
         List<Unloader> retValue = new ArrayList<>();
         int[] craneNumbersByType = new int[3];
         for (int i = 0; i < craneNumbersByType.length; ++i) {

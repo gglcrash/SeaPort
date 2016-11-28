@@ -8,10 +8,10 @@ public interface Unloader extends Drawable {
 
     CargoType getType();
 
-    int getPerfomance();
+    int getPerformance ();
 
     void setAvailability(boolean availability);
 
-    boolean getAvailability();
+    boolean isAvailable ();
 
 }
