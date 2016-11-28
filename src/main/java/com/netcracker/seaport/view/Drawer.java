@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Drawer {
     //TODO: Выбрать правильные координаты!
-    private final Coordinates USER_TEXT_COORDINATES = new Coordinates(1, 35);
+    private final Coordinates USER_TEXT_COORDINATES = new Coordinates(1, 15);
     private static ConsoleSystemInterface csi;
     private int day = 0;
     private String textForUser = "";
