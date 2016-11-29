@@ -118,10 +118,8 @@ public class UserInteraction extends Thread {
 
     private static final class UserInteractionStrings {
         private static final String USER_GREETING =
-            "Hi! Welcome to sea port simulator! \n"
-                + "Type \"-h\" to get help\n"
+            "Hi! Welcome to sea port simulator!"
                 + "Type \"-s\" to start simulation with default parameters\n"
-                + "Type \"-d\" to define some parameters of simulation\n"
                 + "If you fed up with the simulator type \"-q\" to quit.\n";
 
         private static final String HELP_TEXT =
